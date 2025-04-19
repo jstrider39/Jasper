@@ -1,4 +1,5 @@
 import { MathOp } from "./master/math";
+import { Utils } from "./master/utils";
 
 export class Master {
   constructor(set, get) {
@@ -8,8 +9,12 @@ export class Master {
   /** @type {MathOp} */
   mathOp;
 
+  /** @type {Utils} */
+  utils;
+
   init() {
     this.mathOp = new MathOp(this.set, this.get);
+    this.utils = new Utils(this.set, this.get);
   }
 }
 

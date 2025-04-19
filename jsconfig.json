@@ -4,5 +4,5 @@
     "moduleResolution": "node",
     "checkJs": true
   },
-  "include": ["src/**/*.js", "test/**/*.js"]
+  "include": ["src/**/*.js", "test/**/*.js", "setup-mocks.js"]
 }

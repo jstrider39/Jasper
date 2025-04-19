@@ -1,5 +1,8 @@
+// First import the setup to register mocks
+import "../setup-mocks";
+
 import master from "../src/master";
-import { describe, it, expect, run } from "./bin/testrunner";
+import { describe, it, expect } from "./bin/testrunner";
 
 describe("Math", () => {
   it("adds numbers", () => {

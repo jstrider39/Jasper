@@ -1,3 +1,5 @@
+import master from "../master";
+
 export class MathOp {
   constructor(set, get) {
     this.set = set;
@@ -5,6 +7,7 @@ export class MathOp {
   }
 
   add(a, b) {
+    master.utils.logIt();
     return a + b;
   }
 }

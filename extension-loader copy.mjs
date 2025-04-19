@@ -1,17 +1,11 @@
+import { resolve as pathResolve } from "node:path";
 import { pathToFileURL, fileURLToPath } from "node:url";
-import path from "node:path";
 import fs from "node:fs/promises";
+import path from "node:path";
 
-// Store mock implementations
-const mocks = new Map();
-
-// Function to register a mock for a specific module
-export function registerMock(modulePath, mockImplementation) {
-  mocks.set(path.resolve(modulePath), mockImplementation);
-}
-
+// This function must be named "resolve" to be recognized by Node.js
 export async function resolve(specifier, context, nextResolve) {
-  // Add debugging
+  // Add debugging here
   console.log(`Trying to resolve: ${specifier}`);
   console.log(`From parent: ${context.parentURL || "no parent"}`);
 
@@ -23,13 +17,6 @@ export async function resolve(specifier, context, nextResolve) {
 
     // Resolve path relative to parent
     let resolvedPath = path.resolve(parentPath, specifier);
-
-    // Check for mocks first
-    if (mocks.has(resolvedPath) || mocks.has(resolvedPath + ".js")) {
-      // Create a virtual URL for the mock
-      const mockUrl = `mock:${resolvedPath}`;
-      return { url: mockUrl };
-    }
 
     try {
       // Try direct path first
@@ -72,27 +59,7 @@ export async function resolve(specifier, context, nextResolve) {
   return nextResolve(specifier, context);
 }
 
-export async function load(url, context, nextLoad) {
-  // Check if this is a mock URL
-  if (url.startsWith("mock:")) {
-    const modulePath = url.substring(5); // Remove 'mock:' prefix
-    const mockedModule = mocks.get(modulePath) || mocks.get(modulePath + ".js");
-
-    // Convert the mock to ESM format
-    const source = `
-      export default ${JSON.stringify(mockedModule)};
-      ${Object.keys(mockedModule)
-        .map((key) => `export const ${key} = ${JSON.stringify(mockedModule[key])};`)
-        .join("\n")}
-    `;
-
-    return {
-      format: "module",
-      source,
-      shortCircuit: true,
-    };
-  }
-
-  // Normal loading process
+// Required for Node.js v16+ custom loaders
+export function load(url, context, nextLoad) {
   return nextLoad(url, context);
 }

@@ -9,3 +9,7 @@ npm install @mui/icons-material
 ---
 
 next add test/ to the .gitignore
+
+--
+
+npm install --save-dev babel-plugin-module-resolver

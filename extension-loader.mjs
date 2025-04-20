@@ -1,6 +1,7 @@
 import { pathToFileURL, fileURLToPath } from "node:url";
 import path from "node:path";
 import fs from "node:fs/promises";
+import { mock } from "node:test";
 
 // Store mock implementations
 const mocks = new Map();
@@ -12,8 +13,7 @@ export function registerMock(modulePath, mockImplementation) {
 
 export async function resolve(specifier, context, nextResolve) {
   // Add debugging
-  console.log(`Trying to resolve: ${specifier}`);
-  console.log(`From parent: ${context.parentURL || "no parent"}`);
+  console.log(`From parent: ${context.parentURL || "no parent"} trying to resolve: ${specifier} `);
 
   // Handle relative or absolute paths
   if (specifier.startsWith(".") || specifier.startsWith("/") || specifier.includes(":")) {

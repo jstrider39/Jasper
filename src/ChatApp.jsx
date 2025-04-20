@@ -25,7 +25,15 @@ function ChatApp() {
   console.log(renderCount);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-  const [username, setUsername] = useState("");
+  // In your ChatApp component
+  const [username, setUsername] = useState(() => {
+    return sessionStorage.getItem("chatUsername") || "";
+  });
+
+  useEffect(() => {
+    sessionStorage.setItem("chatUsername", username);
+  }, [username]);
+
   const [isConnected, setIsConnected] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);

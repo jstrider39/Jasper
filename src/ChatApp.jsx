@@ -16,10 +16,13 @@ import {
 } from "@mui/material";
 import { io } from "socket.io-client";
 import axios from "axios";
+import { useRenderCount } from "./useRenderCount";
 
 const API_URL = "http://localhost:4000";
 
 function ChatApp() {
+  const renderCount = useRenderCount();
+  console.log(renderCount);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [username, setUsername] = useState("");
@@ -62,25 +65,6 @@ function ChatApp() {
           console.log(JSON.stringify(message, null, 2));
           setMessages((prevMessages) => [...prevMessages, message]);
         });
-
-        // Fetch messages via HTTP as backup
-        // axios
-        //   .get(`${API_URL}/api/messages`)
-        //   .then((response) => {
-        //     if (!socketRef.current.connected) {
-        //       setMessages(response.data);
-        //       console.log("asdf123 eeeeee");
-        //       setIsLoading(false);
-        //     }
-        //   })
-        //   .catch((err) => {
-        //     console.error("Error fetching messages:", err);
-        //     if (!socketRef.current.connected) {
-        //       setError("Failed to load messages");
-        //       console.log("asdf123 fffffffffffff");
-        //       setIsLoading(false);
-        //     }
-        //   });
       })
       .catch((err) => {
         console.error("Server health check failed:", err);
@@ -93,13 +77,14 @@ function ChatApp() {
 
     // Cleanup on unmount
     return () => {
-      return () => {
+      if (socketRef.current) {
+        console.log("TURN OFF !!!!!!!!!");
         socket.off("new message", handleNewMessage);
-      };
-      // if (socketRef.current) {
-      //   socketRef.current.disconnect();
-      // }
+      }
     };
+    // if (socketRef.current) {
+    //   socketRef.current.disconnect();
+    // }
   }, []);
 
   // Auto-scroll to bottom when new messages arrive

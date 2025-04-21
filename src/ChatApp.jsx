@@ -19,6 +19,8 @@ import axios from "axios";
 import { useRenderCount } from "./useRenderCount";
 
 const API_URL = "http://localhost:4000";
+//API_URL = "http://localhost:4000";
+//const socket = new WebSocket('ws://localhost:8787');
 
 function ChatApp() {
   const renderCount = useRenderCount();

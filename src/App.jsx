@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Container, Typography } from "@mui/material";
 import master from "./master";
 import ChatApp from "./ChatApp";
+import ChatComponent from "./ChatAppV2";
 
 function App() {
   return (
@@ -12,7 +13,7 @@ function App() {
       <Button variant="contained" color="primary">
         Click Me
       </Button>
-      <ChatApp></ChatApp>
+      <ChatComponent></ChatComponent>
     </Container>
   );
 }

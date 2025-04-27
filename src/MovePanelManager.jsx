@@ -75,7 +75,7 @@ const MovePanelManager = () => {
         </Button>
       </Stack>
 
-      <Box sx={{ width: "100%", height: "100%" }}>
+      <Box sx={{ width: "100%", height: "100vh" }}>
         {panels.map((panel) => (
           <MovePanel
             key={panel.id}

@@ -15,8 +15,8 @@ const MovePanel = ({ id, title, position, isActive, isMinimized, onDrag, onActiv
       setIsDragging(true);
       const rect = panelRef.current.getBoundingClientRect();
       setDragOffset({
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top,
+        x: e.clientX - rect.left + window.scrollX,
+        y: e.clientY - rect.top + window.scrollY,
       });
       onActivate(id);
       e.preventDefault(); // Prevent text selection during drag
@@ -25,10 +25,11 @@ const MovePanel = ({ id, title, position, isActive, isMinimized, onDrag, onActiv
 
   // Handle mouse move for dragging
   const handleMouseMove = (e) => {
+    console.log(window.scrollX, window.scrollY);
     if (isDragging) {
       const newPosition = {
-        x: e.clientX - dragOffset.x,
-        y: e.clientY - dragOffset.y,
+        x: e.clientX - dragOffset.x + window.scrollX,
+        y: e.clientY - dragOffset.y + window.scrollY,
       };
       onDrag(id, newPosition);
     }

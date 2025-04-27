@@ -3,7 +3,8 @@ import { useWebSocket } from "./useWebSocket";
 
 function ChatComponent() {
   const [inputMessage, setInputMessage] = useState("");
-  const { isConnected, messages, sendMessage } = useWebSocket("wss://chat-app.your-worker-subdomain.workers.dev");
+  //https://chat-app.michaelsroper.workers.dev
+  const { isConnected, messages, sendMessage } = useWebSocket("wss://chat-app.michaelsroper.workers.dev");
 
   const handleSubmit = (e) => {
     e.preventDefault();

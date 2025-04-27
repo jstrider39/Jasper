@@ -1,4 +1,4 @@
-import master from "../master";
+import { master } from "../masterSlice";
 
 export class MathOp {
   constructor(set, get) {

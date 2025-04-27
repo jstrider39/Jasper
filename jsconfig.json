@@ -2,7 +2,9 @@
   "compilerOptions": {
     "target": "ES6",
     "moduleResolution": "node",
-    "checkJs": true
+    "baseUrl": "",
+    "checkJs": true,
+    "jsx": "react-jsx"
   },
-  "include": ["src/**/*.js", "test/**/*.js", "setup-mocks.js"]
+  "include": ["src/**/*.js", "test/**/*.js", "setup-mocks.js", "src/ErrorBoundary.jsx"]
 }

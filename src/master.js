@@ -1,23 +1,33 @@
 import { MathOp } from "./master/math";
 import { Utils } from "./master/utils";
+import UtilsJsx from "./utilsJsx";
+import { TakeANumber } from "./TakeANumber";
 
 export class Master {
-  constructor(set, get) {
-    this.set = set;
-    this.get = get;
-  }
+  constructor() {}
   /** @type {MathOp} */
   mathOp;
 
   /** @type {Utils} */
   utils;
 
-  init() {
-    this.mathOp = new MathOp(this.set, this.get);
-    this.utils = new Utils(this.set, this.get);
+  /** @type {UtilsJsx} */
+  utilsJsx;
+
+  init(set, get) {
+    this.mathOp = new MathOp(set, get);
+    this.utils = new Utils(set, get);
+    this.utilsJsx = new UtilsJsx(set, get);
+  }
+
+  get nextPositive() {
+    return TakeANumber.NextPositive;
+  }
+  get nextNegative() {
+    return TakeANumber.NextNegative;
   }
 }
 
-const master = new Master();
-master.init();
-export default master;
+// const master = new Master();
+// master.init();
+// export default master;

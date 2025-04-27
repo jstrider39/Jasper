@@ -7,8 +7,9 @@ export function useWebSocket(url) {
 
   useEffect(() => {
     // Create WebSocket connection
-    //const webSocket = new WebSocket(url);
-    const webSocket = new WebSocket("ws://127.0.0.1:8787");
+    const webSocket = new WebSocket(url);
+    //const webSocket = new WebSocket("ws://127.0.0.1:8787");
+    //Use ws:// protocol instead of wss:// for local connections
 
     // Connection opened
     webSocket.addEventListener("open", () => {

@@ -3,7 +3,7 @@ import { Paper, Box, Typography, IconButton, Stack } from "@mui/material";
 import MinimizeIcon from "@mui/icons-material/Minimize";
 import CropSquareIcon from "@mui/icons-material/CropSquare";
 
-const MovePanel = ({ id, title, position, isActive, isMinimized, onDrag, onActivate, onMinimize }) => {
+const MovePanel = ({ children, id, title, position, isActive, isMinimized, onDrag, onActivate, onMinimize }) => {
   const panelRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
@@ -112,7 +112,8 @@ const MovePanel = ({ id, title, position, isActive, isMinimized, onDrag, onActiv
       {/* Panel Content */}
       {!isMinimized && (
         <Box sx={{ p: 2, height: "calc(100% - 48px)", overflow: "auto" }}>
-          <Typography variant="body1">Panel content goes here</Typography>
+          {/* <Typography variant="body1">Panel content goes here</Typography> */}
+          {children}
         </Box>
       )}
     </Paper>

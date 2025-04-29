@@ -1,0 +1,59 @@
+
+**************
+Silvina has loggin
+Mike has login
+https://www.bankofamerica.com/
+
+Silvina has loggin
+Mike has login
+https://www.citi.com/
+
+Mike has login
+https://securelogin.synchronybank.com
+
+Mike has login
+https://www.synchronycredit.com/eSecurity/Login/login.action?clientId=amazon&accountType=plcc&langId=en
+
+Mike has login
+MyMerril has Roth account and CMA(cash management) account
+https://olui2.fs.ml.com/login/signin.aspx
+
+Mike has login
+This is my 401K at work and other work related account including health benefits account
+https://www.benefits.ml.com/login/login
+
+
+Silvina has loggin
+Mike has login
+https://www.usbank.com
+
+Mike has login
+https://www.capitalone.com/
+
+Silvina has loggin
+Mike has login
+I was unable to close this accounts, but they have not been used for 5 or 10 years maybe
+https://www.commercebank.com/
+
+Silvina has loggin
+Mike has login
+Not used in 6 months or os, are we still having these accounts?
+https://www.discovercard.com/cardmembersvcs/loginlogout/app/ac_main
+
+
+
+**************
+
+
+We all fight over materialist things
+Do not be rich in materialist things; be rich in God, Jesus, the  Lord is my shephard, I shall not want.
+
+i think if i did a hider on JSON that can be just as good, ...
+  -- present the entire json schema, ... then remove parts I don't what to view
+  -- then scrub the json data for removing parts not mentioned
+  -- also reverse, keep the parts I want to see 
+  -) 
+
+chrome.exe --disable-web-security --user-data-dir="c:/someFolderName"   
+
+https://www.youtube.com/watch?v=1VuAi7YfjnM what was said about I I put the picture of Pope Cryil here then I make him my patriarch

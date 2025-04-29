@@ -1,55 +1,47 @@
-function extractPaths(obj, currentPath = "", paths = []) {
-  // Base case: if obj is null or not an object, we've reached a leaf node
-  if (obj === null || typeof obj !== "object") {
-    if (currentPath) paths.push(currentPath);
-    return paths;
-  }
+function extractPaths(obj, prefix = "") {
+  const paths = [];
 
-  // If we have an array
-  if (Array.isArray(obj)) {
-    // For arrays, we use [] notation and continue recursion for each element
-    for (let i = 0; i < obj.length; i++) {
-      const newPath = currentPath ? `${currentPath}[${i}]` : `[${i}]`;
-      extractPaths(obj[i], newPath, paths);
+  function traverse(currentObj, currentPath) {
+    if (currentObj === null || typeof currentObj !== "object") {
+      paths.push(currentPath);
+      return;
     }
-  } else {
-    // For objects, we traverse each property
-    for (const key in obj) {
-      if (Object.prototype.hasOwnProperty.call(obj, key)) {
-        // Create the new path segment
-        const newPath = currentPath ? `${currentPath}.${key}` : key;
 
-        // Recurse with the new path
-        extractPaths(obj[key], newPath, paths);
+    if (Array.isArray(currentObj)) {
+      // Handle arrays - add [] notation and recurse into array elements
+      for (let i = 0; i < currentObj.length; i++) {
+        const element = currentObj[i];
+
+        if (typeof element === "object" && element !== null) {
+          // For objects within arrays, continue recursion without adding array index
+          traverse(element, `${currentPath}[]`);
+        } else {
+          // For primitive values in arrays
+          paths.push(`${currentPath}[]`);
+        }
+      }
+    } else {
+      // Handle objects
+      for (const key in currentObj) {
+        if (Object.prototype.hasOwnProperty.call(currentObj, key)) {
+          const value = currentObj[key];
+          const newPath = currentPath ? `${currentPath}.${key}` : key;
+
+          if (typeof value === "object" && value !== null) {
+            traverse(value, newPath);
+          } else {
+            paths.push(newPath);
+          }
+        }
       }
     }
   }
 
+  traverse(obj, prefix);
   return paths;
 }
 
-// Function to find paths to a specific pattern (like party objects inside roles arrays)
-function findPatternPaths(obj) {
-  // Get all paths in the object
-  const allPaths = extractPaths(obj);
-  //return allPaths;
-  // Filter paths that match our pattern - ending with 'party' and containing both 'accounts' and 'roles'
-  const patternPaths = allPaths.filter(
-    (path) => path.endsWith(".party.name") && path.includes("accounts") && path.includes("roles")
-  );
-
-  // Extract the common pattern by replacing specific array indices with []
-  if (patternPaths.length > 0) {
-    const firstPath = patternPaths[0];
-    // Replace array indices with [] notation
-    return firstPath.replace(/\[\d+\]/g, "[]");
-  }
-
-  return null;
-}
-
-//participant.accounts[].name
-// Example usage
+// Example usage:
 const jsonData = {
   participant: {
     accounts: [
@@ -139,6 +131,4 @@ const jsonData = {
     ],
   },
 };
-
-const pathPattern = findPatternPaths(jsonData);
-console.log(pathPattern); // Should output: participant.accounts[].roles[].party
+console.log(extractPaths(jsonData));

@@ -6,7 +6,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { master } from "./masterSlice";
 import MovePanel from "./MovePanel";
 
-const MovePanelManager = () => {
+const MovePanelManager = ({ children }) => {
   const [panels, setPanels] = useState([]);
   const [activePanelId, setActivePanelId] = useState(null);
 
@@ -87,7 +87,9 @@ const MovePanelManager = () => {
             onDrag={onDrag}
             onActivate={onActivate}
             onMinimize={onMinimize}
-          />
+          >
+            {children}
+          </MovePanel>
         ))}
       </Box>
     </Box>

@@ -46,8 +46,8 @@
 .gridHeader {
   /* Uses CSS Grid to align header cells in a row */
   display: grid;
-  /* Fixed to 4 columns to match data structure */
-  grid-template-columns: repeat(4, minmax(100px, 1fr));
+  /* Defines column widths: ID (0.5fr), Name (1fr), Age (0.5fr), City (1fr) */
+  grid-template-columns: minmax(50px, 0.5fr) minmax(100px, 1fr) minmax(50px, 0.5fr) minmax(100px, 1fr);
   /* Uses theme’s header background color */
   background-color: var(--background-header);
   /* Makes header text bold for emphasis */
@@ -88,8 +88,8 @@
 .gridRow {
   /* Uses CSS Grid to align cells in a row */
   display: grid;
-  /* Matches the header’s column template for alignment */
-  grid-template-columns: repeat(4, minmax(100px, 1fr));
+  /* Matches the header’s column template: ID (0.5fr), Name (1fr), Age (0.5fr), City (1fr) */
+  grid-template-columns: minmax(50px, 0.5fr) minmax(100px, 1fr) minmax(50px, 0.5fr) minmax(100px, 1fr);
   /* Ensures rows stack vertically */
   width: 100%;
 }
@@ -123,8 +123,8 @@
   /* Adjusts header and row column widths for smaller screens */
   .gridHeader,
   .gridRow {
-    /* Reduces minimum column width to 80px to fit more columns */
-    grid-template-columns: repeat(4, minmax(80px, 1fr));
+    /* Maintains the same proportions but reduces minimum widths */
+    grid-template-columns: minmax(40px, 0.5fr) minmax(80px, 1fr) minmax(40px, 0.5fr) minmax(80px, 1fr);
   }
 
   /* Adjusts header and cell styling for smaller screens */

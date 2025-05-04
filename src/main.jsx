@@ -5,11 +5,12 @@ import App from "./App";
 import TreeGridApp from "./TreeGridApp";
 import MovePanelManager from "./MovePanelManager";
 import MovePanelApp from "./MovePanelApp";
+import DataGridApp from "./cssGrid/DataGridApp";
 
 createRoot(document.getElementById("root")).render(
   // <StrictMode>
-
-  <MovePanelApp />
+  <DataGridApp />
+  // <MovePanelApp />
   // <TreeGridApp />
   // </StrictMode>
 );

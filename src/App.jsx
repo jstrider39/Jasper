@@ -7,6 +7,7 @@ import useStore from "./useStore";
 import { masterSlice } from "./masterSlice";
 import ErrorBoundary from "./ErrorBoundary";
 import MovePanelManager from "./MovePanelManager";
+import DataGridApp from "./cssGrid/DataGridApp";
 
 //sdebugger;
 //masterSlice();
@@ -25,7 +26,8 @@ function App() {
           <Button variant="contained" color="primary">
             Click Me
           </Button>
-          <ChatComponent></ChatComponent>
+          <DataGridApp></DataGridApp>
+          {/* <ChatComponent></ChatComponent> */}
         </Container>
       </ThemeProvider>
     </ErrorBoundary>

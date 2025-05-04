@@ -1,0 +1,151 @@
+/* Define CSS custom properties for theming */
+:root {
+  /* Light theme colors */
+  --background-header: #f5f5f5; /* Header background for light theme */
+  --background-cell: #ffffff; /* Cell background for light theme */
+  --background-cell-alt: #fafafa; /* Alternating cell background for light theme */
+  --text-color: #333333; /* Text color for light theme */
+  --border-color: #dddddd; /* Border color for light theme */
+  --border-color-light: #eeeeee; /* Lighter border for cells */
+  --hover-background: #e0e0e0; /* Header hover background */
+}
+
+/* Dark theme overrides */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Dark theme colors */
+    --background-header: #2a2a2a; /* Darker header background */
+    --background-cell: #1e1e1e; /* Dark cell background */
+    --background-cell-alt: #262626; /* Darker alternating cell background */
+    --text-color: #e0e0e0; /* Light text color for readability */
+    --border-color: #444444; /* Darker border color */
+    --border-color-light: #333333; /* Darker cell border */
+    --hover-background: #3a3a3a; /* Darker hover background */
+  }
+}
+
+/* Container for the entire data grid */
+.gridContainer {
+  /* Sets the width to 100% of the parent, ensuring the grid spans the available space */
+  width: 100%;
+  /* Limits the maximum width to 800px for readability on large screens */
+  max-width: 800px;
+  /* Centers the grid horizontally within its parent */
+  margin: 0 auto;
+  /* Adds a border using the theme’s border color */
+  border: 1px solid var(--border-color);
+  /* Rounds the corners for a modern look */
+  border-radius: 4px;
+  /* Hides any overflowing content, ensuring a clean appearance */
+  overflow: hidden;
+  /* Ensures the container respects the theme’s background */
+  background-color: var(--background-cell);
+}
+
+/* Header row of the grid */
+.gridHeader {
+  /* Uses CSS Grid to align header cells in a row */
+  display: grid;
+  /* Fixed to 4 columns to match data structure */
+  grid-template-columns: repeat(4, minmax(100px, 1fr));
+  /* Uses theme’s header background color */
+  background-color: var(--background-header);
+  /* Makes header text bold for emphasis */
+  font-weight: bold;
+  /* Adds a bottom border to separate header from body */
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* Individual header cell */
+.headerCell {
+  /* Adds padding for spacing and readability */
+  padding: 12px;
+  /* Aligns text to the left for consistency */
+  text-align: left;
+  /* Changes the cursor to a pointer to indicate clickability for sorting */
+  cursor: pointer;
+  /* Prevents text selection when clicking to sort */
+  user-select: none;
+  /* Adds a smooth background color transition for hover effects */
+  transition: background-color 0.2s;
+  /* Explicitly sets text color to ensure visibility */
+  color: var(--text-color);
+}
+
+/* Hover effect for header cells */
+.headerCell:hover {
+  /* Changes the background on hover for visual feedback */
+  background-color: var(--hover-background);
+}
+
+/* Body of the grid, containing all data rows */
+.gridBody {
+  /* Stacks rows vertically without defining columns here */
+  display: block;
+}
+
+/* Represents a single row in the grid */
+.gridRow {
+  /* Uses CSS Grid to align cells in a row */
+  display: grid;
+  /* Matches the header’s column template for alignment */
+  grid-template-columns: repeat(4, minmax(100px, 1fr));
+  /* Ensures rows stack vertically */
+  width: 100%;
+}
+
+/* Individual cell in the grid body */
+.gridCell {
+  /* Adds padding for spacing and readability */
+  padding: 12px;
+  /* Adds a light bottom border to separate rows */
+  border-bottom: 1px solid var(--border-color-light);
+  /* Hides overflowing content to prevent cell distortion */
+  overflow: hidden;
+  /* Truncates long text with an ellipsis for clean display */
+  text-overflow: ellipsis;
+  /* Prevents text wrapping to maintain a single-line appearance */
+  white-space: nowrap;
+  /* Explicitly sets text color to ensure visibility */
+  color: var(--text-color);
+  /* Sets default cell background */
+  background-color: var(--background-cell);
+}
+
+/* Alternating row background for better readability */
+.gridRow:nth-child(even) .gridCell {
+  /* Applies alternating background to cells in even-numbered rows */
+  background-color: var(--background-cell-alt);
+}
+
+/* Media query for responsive design on smaller screens */
+@media (max-width: 600px) {
+  /* Adjusts header and row column widths for smaller screens */
+  .gridHeader,
+  .gridRow {
+    /* Reduces minimum column width to 80px to fit more columns */
+    grid-template-columns: repeat(4, minmax(80px, 1fr));
+  }
+
+  /* Adjusts header and cell styling for smaller screens */
+  .headerCell,
+  .gridCell {
+    /* Reduces padding to save space */
+    padding: 8px;
+    /* Reduces font size for better fit on small screens */
+    font-size: 14px;
+  }
+}
+
+/* Prevent Chrome’s forced dark mode from breaking text visibility */
+@media (forced-colors: active) {
+  .headerCell,
+  .gridCell {
+    /* Forces high-contrast text color */
+    color: CanvasText;
+    /* Forces high-contrast background */
+    background-color: Canvas;
+    /* Ensures borders are visible */
+    border-color: CanvasText;
+  }
+}

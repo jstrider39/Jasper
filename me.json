@@ -1,0 +1,33 @@
+{
+  "participant": {
+    "accounts": [
+      {
+        "roles": [
+          {
+            "name": "Owner"
+          },
+          {
+            "name": "Administrator"
+          }
+        ]
+      },
+      {
+        "roles": [
+          {
+            "name": "Account Manager"
+          }
+        ]
+      },
+      {
+        "roles": [
+          {
+            "name": "Co-owner"
+          },
+          {
+            "name": "Co-owner"
+          }
+        ]
+      }
+    ]
+  }
+}

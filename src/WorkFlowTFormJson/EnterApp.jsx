@@ -13,7 +13,8 @@ export function EnterApp() {
   const [trigger, setTrigger] = useState(0);
 
   useEffect(() => {
-    steps.setTrigger(() => setTrigger((t) => !t));
+    //steps.setTrigger(() => setTrigger((t) => !t));
+    steps.setTrigger(setTrigger);
   }, []);
 
   //const copunter = useStore((state) => state.steps.clickCounter);

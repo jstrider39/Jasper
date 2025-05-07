@@ -1,4 +1,12 @@
 
+Build a continue workflow:
+   -- add paths to filter on
+   -- add json data
+   -- add paths to actually display in the datagrid
+   -- show the datagrid -- press SAVE to open dialog and save all the data !!
+   
+
+
 DONE! -> VOLLY
 Vax Paul Exampsions sign and scan and return !!
 

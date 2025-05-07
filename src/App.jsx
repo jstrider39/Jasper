@@ -8,6 +8,7 @@ import { masterSlice } from "./masterSlice";
 import ErrorBoundary from "./ErrorBoundary";
 import MovePanelManager from "./MovePanelManager";
 import DataGridApp from "./cssGrid/DataGridApp";
+import { EnterApp } from "./WorkFlowTFormJson/EnterApp";
 
 //sdebugger;
 //masterSlice();
@@ -26,7 +27,8 @@ function App() {
           <Button variant="contained" color="primary">
             Click Me
           </Button>
-          <DataGridApp></DataGridApp>
+          <EnterApp></EnterApp>
+          {/* <DataGridApp></DataGridApp> */}
           {/* <ChatComponent></ChatComponent> */}
         </Container>
       </ThemeProvider>

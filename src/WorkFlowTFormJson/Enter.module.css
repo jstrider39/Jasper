@@ -1,0 +1,26 @@
+.box {
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  margin: 10px 0;
+  box-sizing: border-box; /* Optional: ensures padding doesn't exceed width */
+}
+
+.redBox {
+  composes: box;
+  background-color: red;
+}
+
+.greenBox {
+  composes: box;
+  background-color: green;
+}
+
+.blueBox {
+  composes: box;
+  background-color: blue;
+}

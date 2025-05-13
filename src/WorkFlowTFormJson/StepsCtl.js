@@ -15,6 +15,7 @@ export class Steps {
   _trigger() {
     this.setTrigger((t) => !t);
   }
+
   setTrigger(setTrigger) {
     this.setTrigger = setTrigger;
   }

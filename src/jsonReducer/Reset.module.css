@@ -1,0 +1,70 @@
+/* Reset.module.css */
+.reset {
+  /* Remove default margins and padding */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+
+  /* Ensure consistent font sizing */
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+
+  /* Remove list styles */
+  list-style: none;
+
+  /* Remove default border and outline */
+  border: 0;
+  outline: 0;
+
+  /* Normalize text decoration */
+  text-decoration: none;
+
+  /* Ensure images and media are responsive */
+  max-width: 100%;
+  height: auto;
+
+  /* Remove default button styles */
+  background: none;
+  cursor: pointer;
+
+  /* Ensure consistent line height */
+  line-height: 1;
+}
+
+/* Apply reset to all elements within the .reset container */
+.reset * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Optional: Normalize body for better consistency */
+.reset body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Normalize form elements */
+.reset button,
+.reset input,
+.reset select,
+.reset textarea {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  background: none;
+  border: none;
+}
+
+/* Remove default focus outlines while keeping accessibility */
+.reset *:focus {
+  outline: none;
+}
+
+/* Optional: Improve accessibility for focus states */
+.reset *:focus-visible {
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
+}

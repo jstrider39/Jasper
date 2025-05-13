@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import styles from "./Enter.module.css";
-import { Steps } from "./StepsTug";
+import { Steps } from "./StepsCtl";
 import { create } from "zustand";
 const steps = new Steps();
 const useStore = create((set, get) => {

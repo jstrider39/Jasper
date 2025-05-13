@@ -8,12 +8,14 @@ import MovePanelApp from "./MovePanelApp";
 import DataGridApp from "./cssGrid/DataGridApp";
 import { EnterApp } from "./WorkFlowTFormJson/EnterApp";
 import ErrorBoundary from "./ErrorBoundary";
+import { Main } from "./jsonReducer/main.jsx";
 
 createRoot(document.getElementById("root")).render(
   // <StrictMode>
   // <DataGridApp />
   <ErrorBoundary>
-    <EnterApp></EnterApp>
+    {/* <EnterApp></EnterApp> */}
+    <Main />
   </ErrorBoundary>
   // <MovePanelApp />
   // <TreeGridApp />

@@ -1,0 +1,49 @@
+/* Button.module.css */
+.button {
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: 500;
+  background-color: #007bff; /* Default blue for light theme */
+  color: #ffffff; /* White text */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Hover state for light theme */
+.button:hover {
+  background-color: #0056b3; /* Darker blue */
+}
+
+/* Focus state for light theme */
+.button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.3);
+}
+
+/* Active state for light theme */
+.button:active {
+  background-color: #004085; /* Even darker blue */
+}
+
+/* Dark theme adjustments */
+@media (prefers-color-scheme: dark) {
+  .button {
+    background-color: #1e90ff; /* Lighter blue for better contrast in dark mode */
+    color: #ffffff; /* Keep white text for readability */
+  }
+
+  .button:hover {
+    background-color: #4682b4; /* Slightly darker blue for hover */
+  }
+
+  .button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(30, 144, 255, 0.4); /* Adjusted shadow for dark mode */
+  }
+
+  .button:active {
+    background-color: #104e8b; /* Darker blue for active state */
+  }
+}

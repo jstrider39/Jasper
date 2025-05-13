@@ -1,4 +1,7 @@
 
+C:\Users\super\source\repos\BlazorApp1
+
+
 Build a continue workflow:
    -- add paths to filter on
    -- add json data

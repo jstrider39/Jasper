@@ -1,0 +1,22 @@
+/* App.module.css */
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #f8f9fa; /* Light theme */
+}
+
+.buttonContainer {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+@media (prefers-color-scheme: dark) {
+  .app {
+    background-color: #121212; /* Dark theme */
+  }
+}

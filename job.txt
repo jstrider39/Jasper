@@ -1,0 +1,66 @@
+
+I recall playing chess with against computers in '89, but now
+
+-------------------
+Hi Michael,
+
+Just checking in with you. Have you reviewed the details of the Senior Software Engineer position I sent you?
+ They need someone with C#, .NET, and LINQ queries. This client leads the way in developing award-winning software
+  products for the financial investments industry.
+Please review the job description below. If interested, email your resume.
+ If not, we would appreciate it if you could share this opportunity with your network.
+
+Kayla
+
+Senior Software Engineer, C#, SaaS, Financial, Dallas/Hybrid
+
+Our client is a rapidly growing, Dallas-based SaaS firm specializing in the development of
+ software applications for the financial investment industry. They are seeking a dynamic C# Senior Developer to 
+ join the team focused on developing a CLO Compliance engine, the fastest-growing segment of their business. 
+ You will work closely with the Development Team, Technical Leads, and Product Managers to build 
+ and enhance compliance rules and reporting for external and internal stakeholders.
+
+Why should you apply here?
+
+Profitable, mature software firm in the financial investment industry
+Talented and seasoned executive leadership with a successful track record
+High retention among management and technical staff
+Award-winning software products built using cloud infrastructure
+Work with a talented senior development team
+Opportunity to grow your skills, make an impact, and take ownership
+Flexible hours, excellent plans for compensation/benefits
+
+What will you be doing?
+
+Design, develop, and maintain a CLO compliance application using C#
+Implement complex LINQ queries and dynamic expressions
+Ensure high performance and scalability of the application
+Containerize .NET services using technologies like Docker
+Collaborate with cross-functional teams to define requirements and deliver solutions
+Conduct code reviews and provide constructive feedback
+Participate in weekly sprint planning and execution
+Improve your knowledge of the financial services industry
+
+What are the minimum qualifications?
+
+Bachelor’s degree in Computer Science, Engineering, or a related major
+Senior-level C# development experience with a focus on developing complex applications
+Deep understanding of C# and the .NET framework
+Expertise in writing complex LINQ queries and dynamic expressions
+Knowledge of MS SQL Server and database management systems
+Experience with front-end frameworks such as Angular
+
+What will make your résumé stand out?
+
+Experience in financial services or compliance software development
+Proficiency with performance optimization techniques
+Experience with HTML templating frameworks such as Handlebars, or with report builder libraries and frameworks
+
+Location: Headquarters in North Dallas, First 3 months on-site and then go hybrid (3 days on-site)
+
+Citizenship: U.S. Citizens and Permanent Residents are encouraged to apply. This company is currently 
+unable to provide sponsorship (e.g., H1B).
+
+Salary: 110k – 140k + Bonus, 401k match, Free lunches daily, 100% Medical, Vision, Dental
+-------------------
+

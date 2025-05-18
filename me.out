@@ -1,0 +1,144 @@
+////J:\dev\Jasper\testV2\a-loader.js
+import { getMock } from "./a-mock-registry.js";
+import { Module, createRequire } from "module";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+import { registerMock } from "./a-mock-registry.js";
+
+// Register mock here directly — now it's in the same context as getMock()
+const mockUrl = new URL("./my-module.js", import.meta.url).href;
+console.log("[Loader] Registering mock for:", mockUrl);
+registerMock(mockUrl, {
+  hello: () => "Mocked Hello!",
+});
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const require = createRequire(import.meta.url);
+
+export async function resolve(specifier, context, nextResolve) {
+  const resolved = await nextResolve(specifier, context);
+  console.log(`[Loader] Resolve: ${specifier} -> ${resolved.url}`);
+  const mock = getMock(resolved.url);
+  if (mock) {
+    console.log(`[Loader] Mock found for: ${resolved.url}`);
+    return {
+      url: resolved.url,
+      format: "module",
+      shortCircuit: true,
+    };
+  } else {
+    console.log(`[Loader] No mock found for: ${resolved.url}`);
+  }
+  return resolved;
+}
+
+export async function load(url, context, nextLoad) {
+  const mock = getMock(url);
+  if (mock) {
+    console.log(`[Loader] Mock found for: ${url}`);
+    // Create a module source that exports the mock object directly
+    const source = `export default ${JSON.stringify(mock, (key, value) => {
+      if (typeof value === "function") {
+        return value.toString();
+      }
+      return value;
+    })};`;
+    return {
+      format: "module",
+      source: source,
+      shortCircuit: true,
+    };
+  } else {
+    console.log(`[Loader] No mock found for: ${url}`);
+  }
+  return nextLoad(url, context);
+}
+
+////J:\dev\Jasper\testV2\a-mock-registry.js
+console.log("[MockRegistry] **************** Module instance:", import.meta.url);
+
+// a-mock-registry.js
+globalThis.__mockRegistry__ ??= new Map();
+//console.log("[MockRegistry] **************** Module instance:", globalThis.__mockRegistry__.size);
+
+const ENABLE_LOGGING = true;
+
+function log(message, ...data) {
+  if (ENABLE_LOGGING) {
+    console.log(`[MockSystem] ${message}`, ...data);
+  }
+}
+
+export function registerMock(specifier, mockModule) {
+  const normalized = new URL(specifier).href;
+  globalThis.__mockRegistry__.set(normalized, mockModule);
+  log(
+    `[MockRegistry]  **************** Registered mock for "${normalized} (${globalThis.__mockRegistry__.size})"`,
+    mockModule
+  );
+}
+
+export function getMock(specifier) {
+  const normalized = new URL(specifier).href;
+  const mock = globalThis.__mockRegistry__.get(normalized);
+  if (mock) {
+    log(`Retrieved mock for "${normalized}"`, mock);
+  } else {
+    log(`Mock---not found for V2 "${normalized}"`, globalThis.__mockRegistry__.size);
+    log(`Current mocks: ${[...globalThis.__mockRegistry__.keys()].join(", ")}`);
+  }
+  return mock;
+}
+
+export function clearMocks() {
+  const count = globalThis.__mockRegistry__.size;
+  globalThis.__mockRegistry__.clear();
+  log(`Cleared ${count} mock(s)`);
+}
+
+////J:\dev\Jasper\testV2\a-mock-setup.js
+import { registerMock } from "./a-mock-registry.js";
+
+const mockUrl = new URL("./my-module.js", import.meta.url).href;
+console.log("[MockSetup] Registering mock for:", mockUrl);
+registerMock(mockUrl, {
+  hello: () => "Mocked Hello!",
+});
+
+////J:\dev\Jasper\testV2\a-setup.js
+import { register } from "module";
+
+register(new URL("./a-loader.js", import.meta.url).href, import.meta.url);
+
+////J:\dev\Jasper\testV2\app.js
+const myModule = await import("./my-module.js");
+
+console.log("[App] Imported module:", myModule);
+console.log(typeof myModule.default);
+console.log(typeof myModule.default.hello);
+console.log(myModule.default.hello);
+console.log(myModule.default.hello());
+
+// import { registerMock } from "./a-mock-registry.js";
+// import myModule from "./my-module.js";
+// console.log("[App] Imported module:", myModule);
+// console.log(myModule.default.hello());
+
+// const mockUrl = new URL("./my-module.js", import.meta.url).href;
+// console.log("[App] Registering mock for:", mockUrl);
+// registerMock(mockUrl, {
+//   hello: () => "Mocked Hello!",
+// });
+
+// // Dynamically import the module after registering the mock
+// const myModule = await import("./my-module.js");
+
+// console.log("[App] Imported module:", myModule);
+// console.log(myModule.default.hello());
+
+////J:\dev\Jasper\testV2\my-module.js
+export default {
+  hello: () => "Real Hello!",
+};
+

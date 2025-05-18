@@ -29,3 +29,14 @@ i think if i did a hider on JSON that can be just as good, ...
 chrome.exe --disable-web-security --user-data-dir="c:/someFolderName"   
 
 https://www.youtube.com/watch?v=1VuAi7YfjnM what was said about I I put the picture of Pope Cryil here then I make him my patriarch
+
+[MockSystem] Mock not found for "file:///J:/dev/Jasper/testV2/app.js"
+[MockSystem] Mock not found for "file:///J:/dev/Jasper/testV2/app.js"
+[MockSystem] Mock not found for "file:///J:/dev/Jasper/testV2/a-mock-registry.js"
+[MockSystem] Mock not found for "file:///J:/dev/Jasper/testV2/a-mock-registry.js"
+[App] Registering mock for: file:///J:/dev/Jasper/testV2/my-module.js
+[MockSystem] Registered mock for "file:///J:/dev/Jasper/testV2/my-module.js" { hello: [Function: hello] }
+[MockSystem] Mock not found for "file:///J:/dev/Jasper/testV2/my-module.js"
+[MockSystem] Mock not found for "file:///J:/dev/Jasper/testV2/my-module.js"
+[App] Imported module: [Module: null prototype] { default: { hello: [Function: hello] } }
+Real Hello!

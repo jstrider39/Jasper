@@ -37,16 +37,20 @@ export async function load(url, context, nextLoad) {
   const mock = getMock(url);
   if (mock) {
     console.log(`[Loader] Mock found for: ${url}`);
-    // Create a module source that exports the mock object directly
-    const source = `export default ${JSON.stringify(mock, (key, value) => {
+
+    // Generate actual JS source code, not a JSON string
+    const exportedProps = Object.entries(mock).map(([key, value]) => {
       if (typeof value === "function") {
-        return value.toString();
+        return `${key}: ${value.toString()}`;
       }
-      return value;
-    })};`;
+      return `${key}: ${JSON.stringify(value)}`;
+    });
+
+    const source = `export default { ${exportedProps.join(", ")} };`;
+
     return {
       format: "module",
-      source: source,
+      source,
       shortCircuit: true,
     };
   } else {
@@ -115,30 +119,18 @@ register(new URL("./a-loader.js", import.meta.url).href, import.meta.url);
 const myModule = await import("./my-module.js");
 
 console.log("[App] Imported module:", myModule);
-console.log(typeof myModule.default);
-console.log(typeof myModule.default.hello);
-console.log(myModule.default.hello);
 console.log(myModule.default.hello());
 
-// import { registerMock } from "./a-mock-registry.js";
-// import myModule from "./my-module.js";
-// console.log("[App] Imported module:", myModule);
-// console.log(myModule.default.hello());
+console.log(myModule.myGotoStore(22)); // how to get this to mock correctly??
 
-// const mockUrl = new URL("./my-module.js", import.meta.url).href;
-// console.log("[App] Registering mock for:", mockUrl);
-// registerMock(mockUrl, {
-//   hello: () => "Mocked Hello!",
-// });
-
-// // Dynamically import the module after registering the mock
-// const myModule = await import("./my-module.js");
-
-// console.log("[App] Imported module:", myModule);
-// console.log(myModule.default.hello());
+//trintium
 
 ////J:\dev\Jasper\testV2\my-module.js
 export default {
   hello: () => "Real Hello!",
 };
+
+export function myGotoStore(count) {
+  hello: () => "Real GotoStore! " + count;
+}
 

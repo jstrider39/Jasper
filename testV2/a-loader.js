@@ -1,14 +1,18 @@
+// J:\dev\Jasper\testV2\a-loader.js
 import { getMock } from "./a-mock-registry.js";
 import { Module, createRequire } from "module";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import { registerMock } from "./a-mock-registry.js";
 
-// Register mock here directly — now it's in the same context as getMock()
+// Register mock here directly
 const mockUrl = new URL("./my-module.js", import.meta.url).href;
 console.log("[Loader] Registering mock for:", mockUrl);
 registerMock(mockUrl, {
-  hello: () => "Mocked Hello!",
+  default: {
+    hello: () => "Mocked Hello!",
+  },
+  myGotoStore: (count) => `Mocked GotoStore! ${count}`,
 });
 
 const __filename = fileURLToPath(import.meta.url);
@@ -37,16 +41,27 @@ export async function load(url, context, nextLoad) {
   if (mock) {
     console.log(`[Loader] Mock found for: ${url}`);
 
-    // Generate actual JS source code, not a JSON string
-    const exportedProps = Object.entries(mock).map(([key, value]) => {
-      if (typeof value === "function") {
-        return `${key}: ${value.toString()}`;
+    // Generate source code for default and named exports
+    const exportStatements = [];
+    for (const [key, value] of Object.entries(mock)) {
+      if (key === "default") {
+        const defaultProps = Object.entries(value).map(([prop, val]) => {
+          if (typeof val === "function") {
+            return `${prop}: ${val.toString()}`;
+          }
+          return `${prop}: ${JSON.stringify(val)}`;
+        });
+        exportStatements.push(`export default { ${defaultProps.join(", ")} };`);
+      } else {
+        if (typeof value === "function") {
+          exportStatements.push(`export const ${key} = ${value.toString()};`);
+        } else {
+          exportStatements.push(`export const ${key} = ${JSON.stringify(value)};`);
+        }
       }
-      return `${key}: ${JSON.stringify(value)}`;
-    });
+    }
 
-    const source = `export default { ${exportedProps.join(", ")} };`;
-
+    const source = exportStatements.join("\n");
     return {
       format: "module",
       source,

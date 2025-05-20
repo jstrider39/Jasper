@@ -2,7 +2,10 @@ import { readFileSync } from "fs";
 
 export function readAndLogFiles(pathsString) {
   // Split the input string by newlines to get individual file paths
-  const filePaths = pathsString.split(/\r?\n/).filter((path) => path.trim() !== "");
+  const filePaths = pathsString
+    .split(/\r?\n/)
+    .filter((path) => path.trim() !== "")
+    .map((item) => item.trim());
   //console.log(Array.isArray(filePaths), filePaths.length, filePaths[0]); // Log the full path file name
 
   // Process each file path
@@ -26,12 +29,18 @@ export function readAndLogFiles(pathsString) {
 // Example usage:
 // readAndLogFiles('/path/to/file1.txt\\n/path/to/file2.txt\\n/path/to/file3.txt');
 
-const files = `
-J:\\dev\\Jasper\\testV2\\a-loader.js
-J:\\dev\\Jasper\\testV2\\a-mock-registry.js
-J:\\dev\\Jasper\\testV2\\a-mock-setup.js
-J:\\dev\\Jasper\\testV2\\a-setup.js
-J:\\dev\\Jasper\\testV2\\app.js
-J:\\dev\\Jasper\\testV2\\my-module.js
+// const files = `
+// J:\\dev\\Jasper\\testV2\\a-loader.js
+// J:\\dev\\Jasper\\testV2\\a-mock-registry.js
+// J:\\dev\\Jasper\\testV2\\a-mock-setup.js
+// J:\\dev\\Jasper\\testV2\\a-setup.js
+// J:\\dev\\Jasper\\testV2\\app.js
+// J:\\dev\\Jasper\\testV2\\my-module.js
+// `;
+
+let files = `
+J:\\dev\\Jasper\\server\\src\\index.js
+J:\\dev\\Jasper\\server\\src\\routes\\files.js
 `;
+
 readAndLogFiles(files);

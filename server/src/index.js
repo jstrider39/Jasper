@@ -41,11 +41,21 @@ app.use(
     credentials: true,
   })
 );
+//router.use("api/files", fileRoutes.routes());
 router.use("/files", fileRoutes.routes());
 
 // Routes
 router.get("/api/health", (ctx) => {
   ctx.body = { status: "ok" };
+});
+
+router.get("/routes", async (ctx) => {
+  const routes = router.stack.map((layer) => ({
+    method: layer.methods.join("|"),
+    path: layer.path,
+    name: layer.name || undefined, // Optional route name
+  }));
+  ctx.body = routes;
 });
 
 const messages = [];

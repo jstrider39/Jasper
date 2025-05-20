@@ -1,136 +1,199 @@
-////J:\dev\Jasper\testV2\a-loader.js
-import { getMock } from "./a-mock-registry.js";
-import { Module, createRequire } from "module";
-import { fileURLToPath } from "url";
-import { dirname } from "path";
-import { registerMock } from "./a-mock-registry.js";
+////J:\dev\Jasper\server\src\index.js
+const Koa = require("koa");
+const Router = require("@koa/router");
+const bodyParser = require("koa-bodyparser");
+const cors = require("@koa/cors"); // ✅ modern, maintained package
+const http = require("http");
+const socketIO = require("socket.io");
+const fileRoutes = require("./routes/files");
 
-// Register mock here directly — now it's in the same context as getMock()
-const mockUrl = new URL("./my-module.js", import.meta.url).href;
-console.log("[Loader] Registering mock for:", mockUrl);
-registerMock(mockUrl, {
-  hello: () => "Mocked Hello!",
-});
+const app = new Koa();
+const router = new Router();
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-const require = createRequire(import.meta.url);
+const allowedOrigins = [
+  "localhost:3000",
+  "localhost:4000",
+  // "http://localhost:3000",
+  // "http://localhost:4000",
+  // "http://192.168.1.100:3000",
+  // "http://192.168.1.101:3000",
+  // "http://192.168.1.102:3000",
+];
 
-export async function resolve(specifier, context, nextResolve) {
-  const resolved = await nextResolve(specifier, context);
-  console.log(`[Loader] Resolve: ${specifier} -> ${resolved.url}`);
-  const mock = getMock(resolved.url);
-  if (mock) {
-    console.log(`[Loader] Mock found for: ${resolved.url}`);
-    return {
-      url: resolved.url,
-      format: "module",
-      shortCircuit: true,
-    };
-  } else {
-    console.log(`[Loader] No mock found for: ${resolved.url}`);
-  }
-  return resolved;
-}
+// Middleware
+app.use(bodyParser());
 
-export async function load(url, context, nextLoad) {
-  const mock = getMock(url);
-  if (mock) {
-    console.log(`[Loader] Mock found for: ${url}`);
+app.use(
+  cors({
+    origin: (origin, ctx) => {
+      console.log("CORS request from origin:", origin.host);
 
-    // Generate actual JS source code, not a JSON string
-    const exportedProps = Object.entries(mock).map(([key, value]) => {
-      if (typeof value === "function") {
-        return `${key}: ${value.toString()}`;
+      // Allow requests with no origin (e.g., curl, mobile apps)
+      if (!origin) return "*";
+
+      if (allowedOrigins.includes(origin?.request?.header?.host)) {
+        console.log("✔️ Allowed origin:", origin);
+        return origin;
       }
-      return `${key}: ${JSON.stringify(value)}`;
-    });
 
-    const source = `export default { ${exportedProps.join(", ")} };`;
+      console.log("❌ Not allowed origin V2:", origin, allowedOrigins, origin);
+      return ""; // Returning empty string blocks the request
+    },
+    credentials: true,
+  })
+);
+//router.use("api/files", fileRoutes.routes());
+router.use("files", fileRoutes.routes());
 
-    return {
-      format: "module",
-      source,
-      shortCircuit: true,
-    };
-  } else {
-    console.log(`[Loader] No mock found for: ${url}`);
-  }
-  return nextLoad(url, context);
-}
-
-////J:\dev\Jasper\testV2\a-mock-registry.js
-console.log("[MockRegistry] **************** Module instance:", import.meta.url);
-
-// a-mock-registry.js
-globalThis.__mockRegistry__ ??= new Map();
-//console.log("[MockRegistry] **************** Module instance:", globalThis.__mockRegistry__.size);
-
-const ENABLE_LOGGING = true;
-
-function log(message, ...data) {
-  if (ENABLE_LOGGING) {
-    console.log(`[MockSystem] ${message}`, ...data);
-  }
-}
-
-export function registerMock(specifier, mockModule) {
-  const normalized = new URL(specifier).href;
-  globalThis.__mockRegistry__.set(normalized, mockModule);
-  log(
-    `[MockRegistry]  **************** Registered mock for "${normalized} (${globalThis.__mockRegistry__.size})"`,
-    mockModule
-  );
-}
-
-export function getMock(specifier) {
-  const normalized = new URL(specifier).href;
-  const mock = globalThis.__mockRegistry__.get(normalized);
-  if (mock) {
-    log(`Retrieved mock for "${normalized}"`, mock);
-  } else {
-    log(`Mock---not found for V2 "${normalized}"`, globalThis.__mockRegistry__.size);
-    log(`Current mocks: ${[...globalThis.__mockRegistry__.keys()].join(", ")}`);
-  }
-  return mock;
-}
-
-export function clearMocks() {
-  const count = globalThis.__mockRegistry__.size;
-  globalThis.__mockRegistry__.clear();
-  log(`Cleared ${count} mock(s)`);
-}
-
-////J:\dev\Jasper\testV2\a-mock-setup.js
-import { registerMock } from "./a-mock-registry.js";
-
-const mockUrl = new URL("./my-module.js", import.meta.url).href;
-console.log("[MockSetup] Registering mock for:", mockUrl);
-registerMock(mockUrl, {
-  hello: () => "Mocked Hello!",
+// Routes
+router.get("/api/health", (ctx) => {
+  ctx.body = { status: "ok" };
 });
 
-////J:\dev\Jasper\testV2\a-setup.js
-import { register } from "module";
+router.get("/routes", async (ctx) => {
+  const routes = router.stack.map((layer) => ({
+    method: layer.methods.join("|"),
+    path: layer.path,
+    name: layer.name || undefined, // Optional route name
+  }));
+  ctx.body = routes;
+});
 
-register(new URL("./a-loader.js", import.meta.url).href, import.meta.url);
+const messages = [];
 
-////J:\dev\Jasper\testV2\app.js
-const myModule = await import("./my-module.js");
+router.get("/api/messages", (ctx) => {
+  ctx.body = messages;
+});
 
-console.log("[App] Imported module:", myModule);
-console.log(myModule.default.hello());
+router.get("/api/clear", (ctx) => {
+  messages.length = 0;
+  ctx.body = messages;
+});
 
-console.log(myModule.myGotoStore(22)); // how to get this to mock correctly??
+// Apply router middleware
+app.use(router.routes());
+app.use(router.allowedMethods());
 
-//trintium
+// Create HTTP server
+const server = http.createServer(app.callback());
 
-////J:\dev\Jasper\testV2\my-module.js
-export default {
-  hello: () => "Real Hello!",
-};
+// Setup Socket.IO with CORS
+const io = socketIO(server, {
+  cors: {
+    origin: (origin, callback) => {
+      console.log("Socket.IO CORS request from:", origin);
+      //if (!origin || allowedOrigins.includes(origin)) {
+      if (!origin) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by Socket.IO CORS"));
+      }
+    },
+    credentials: true,
+    methods: ["GET", "POST"],
+  },
+});
 
-export function myGotoStore(count) {
-  hello: () => "Real GotoStore! " + count;
+// Socket.IO connection handler
+io.on("connection", (socket) => {
+  console.log("🔌 New client connected");
+
+  // Send existing messages
+  socket.emit("initial messages", messages);
+
+  socket.on("new message", (message) => {
+    const newMessage = {
+      id: Date.now(),
+      text: message.text,
+      user: message.user,
+      timestamp: new Date(),
+    };
+
+    messages.push(newMessage);
+    console.log("new message: " + newMessage.text);
+    io.emit("new message", newMessage);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("🚫 Client disconnected");
+  });
+});
+
+// Start server
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
+});
+
+////J:\dev\Jasper\server\src\routes\files.js
+const Router = require("@koa/router");
+const fs = require("fs").promises;
+const path = require("path");
+
+const router = new Router();
+
+// Helper: sanitize and resolve full path
+function resolveFullPath(base, relativePath = "") {
+  const safePath = path.normalize(relativePath).replace(/^(\.\.(\/|\\|$))+/, "");
+  return path.join(base, safePath);
 }
+
+//const ROOT_DIR = path.resolve(__dirname, "../your-root-directory");
+const ROOT_DIR = path.resolve(__dirname, "../");
+
+// Route: GET /files/*path - List folders and files in directory
+router.get("(.*)", async (ctx) => {
+  const subPath = ctx.params[0] || "";
+  const fullPath = resolveFullPath(ROOT_DIR, subPath);
+
+  try {
+    const dirContents = await fs.readdir(fullPath, { withFileTypes: true });
+    const files = dirContents.filter((d) => d.isFile()).map((f) => f.name);
+    const folders = dirContents.filter((d) => d.isDirectory()).map((f) => f.name);
+
+    ctx.body = { path: subPath, folders, files };
+  } catch (err) {
+    ctx.status = 400;
+    ctx.body = { error: "Invalid path or permission denied", details: err.message };
+  }
+});
+
+// Route: POST /files/rename/*path - Rename a single file
+router.post("/rename/(.*)", async (ctx) => {
+  const subPath = ctx.params[0] || "";
+  const { oldName, newName } = ctx.request.body;
+  const dirPath = resolveFullPath(ROOT_DIR, subPath);
+
+  try {
+    const oldPath = path.join(dirPath, oldName);
+    const newPath = path.join(dirPath, newName);
+
+    await fs.rename(oldPath, newPath);
+    ctx.body = { success: true, message: "File renamed successfully" };
+  } catch (err) {
+    ctx.status = 500;
+    ctx.body = { error: "Rename failed", details: err.message };
+  }
+});
+
+// Route: POST /files/rename-multiple/*path - Rename multiple files
+router.post("/rename-multiple/(.*)", async (ctx) => {
+  const subPath = ctx.params[0] || "";
+  const { renames } = ctx.request.body; // expects array of { oldName, newName }
+  const dirPath = resolveFullPath(ROOT_DIR, subPath);
+
+  try {
+    for (const { oldName, newName } of renames) {
+      const oldPath = path.join(dirPath, oldName);
+      const newPath = path.join(dirPath, newName);
+      await fs.rename(oldPath, newPath);
+    }
+    ctx.body = { success: true, message: "Files renamed successfully" };
+  } catch (err) {
+    ctx.status = 500;
+    ctx.body = { error: "Bulk rename failed", details: err.message };
+  }
+});
+
+module.exports = router;
 

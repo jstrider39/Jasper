@@ -1,18 +1,22 @@
 const Koa = require("koa");
-const Router = require("koa-router");
+const Router = require("@koa/router");
 const bodyParser = require("koa-bodyparser");
 const cors = require("@koa/cors"); // ✅ modern, maintained package
 const http = require("http");
 const socketIO = require("socket.io");
+const fileRoutes = require("./routes/files");
 
 const app = new Koa();
 const router = new Router();
 
 const allowedOrigins = [
-  // "http://localhost:3000", // Uncomment if needed for dev
-  "http://192.168.1.100:3000",
-  "http://192.168.1.101:3000",
-  "http://192.168.1.102:3000",
+  "localhost:3000",
+  "localhost:4000",
+  // "http://localhost:3000",
+  // "http://localhost:4000",
+  // "http://192.168.1.100:3000",
+  // "http://192.168.1.101:3000",
+  // "http://192.168.1.102:3000",
 ];
 
 // Middleware
@@ -26,17 +30,18 @@ app.use(
       // Allow requests with no origin (e.g., curl, mobile apps)
       if (!origin) return "*";
 
-      if (allowedOrigins.includes(origin)) {
+      if (allowedOrigins.includes(origin?.request?.header?.host)) {
         console.log("✔️ Allowed origin:", origin);
         return origin;
       }
 
-      console.log("❌ Not allowed origin:", origin);
+      console.log("❌ Not allowed origin V2:", origin, allowedOrigins, origin);
       return ""; // Returning empty string blocks the request
     },
     credentials: true,
   })
 );
+router.use("/files", fileRoutes.routes());
 
 // Routes
 router.get("/api/health", (ctx) => {
@@ -104,7 +109,7 @@ io.on("connection", (socket) => {
 });
 
 // Start server
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
 });

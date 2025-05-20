@@ -1,4 +1,38 @@
 
+I need KOA api/routing add to this file that interact with the file system
+   Get parent path and  list of Folders and list of file names and ensure I can add paths to the URL to get to any level of subdirectory
+   Rename a single file name --post old and new file name and ensure I can add paths to the URL to get to any level of subdirectory
+   Rename multiple file names --post old and new file names and ensure I can add paths to the URL to get to any level of subdirectory
+   Get filenames in a path and ensure I can add paths to the URL to get to any level of subdirectory
+
+
+-- next maintain a history of changes, so I can undo certain changes !
+
+
+---------------------
+---------------------
+
+If you want myGotoStore to handle more complex argument logic, update the mock in a-mock-setup.js. For example:
+javascript
+
+registerMock(mockUrl, {
+  default: {
+    hello: () => "Mocked Hello!",
+  },
+  myGotoStore: (count, options = {}) => {
+    const prefix = options.prefix || "Mocked";
+    return `${prefix} GotoStore! Count: ${count}`;
+  },
+});
+
+Update app.js to test:
+javascript
+
+console.log(myModule.myGotoStore(22, { prefix: "Super" })); // "Super GotoStore! Count: 22"
+---------------------
+---------------------
+
+
 C:\Users\super\source\repos\BlazorApp1
 
 

@@ -2,6 +2,48 @@ const Router = require("@koa/router");
 const fs = require("fs").promises;
 const path = require("path");
 
+function attachRoutesInfo(ctx) {
+  const baseUrl = ctx.origin + "/files";
+
+  const routesInfo = [
+    {
+      method: "GET",
+      path: "/files/{subpath*}",
+      fullUrl: `${baseUrl}/{subpath*}`,
+      description: "List folders and files in a directory",
+      example: `${baseUrl}/documents/projects`,
+    },
+    {
+      method: "POST",
+      path: "/files/rename/{subpath*}",
+      fullUrl: `${baseUrl}/rename/{subpath*}`,
+      description: "Rename a single file",
+      example: `${baseUrl}/rename/documents`,
+      payload: {
+        oldName: "old.txt",
+        newName: "new.txt",
+      },
+    },
+    {
+      method: "POST",
+      path: "/files/rename-multiple/{subpath*}",
+      fullUrl: `${baseUrl}/rename-multiple/{subpath*}`,
+      description: "Rename multiple files",
+      example: `${baseUrl}/rename-multiple/documents`,
+      payload: {
+        renames: [
+          { oldName: "a.txt", newName: "a-renamed.txt" },
+          { oldName: "b.txt", newName: "b-renamed.txt" },
+        ],
+      },
+    },
+  ];
+
+  if (ctx.body && typeof ctx.body === "object") {
+    ctx.body._routes = routesInfo;
+  }
+}
+
 const router = new Router();
 
 // Helper: sanitize and resolve full path
@@ -24,6 +66,7 @@ router.get("(.*)", async (ctx) => {
     const folders = dirContents.filter((d) => d.isDirectory()).map((f) => f.name);
 
     ctx.body = { path: subPath, folders, files };
+    attachRoutesInfo(ctx);
   } catch (err) {
     ctx.status = 400;
     ctx.body = { error: "Invalid path or permission denied", details: err.message };
@@ -42,6 +85,7 @@ router.post("/rename/(.*)", async (ctx) => {
 
     await fs.rename(oldPath, newPath);
     ctx.body = { success: true, message: "File renamed successfully" };
+    attachRoutesInfo(ctx);
   } catch (err) {
     ctx.status = 500;
     ctx.body = { error: "Rename failed", details: err.message };
@@ -61,6 +105,7 @@ router.post("/rename-multiple/(.*)", async (ctx) => {
       await fs.rename(oldPath, newPath);
     }
     ctx.body = { success: true, message: "Files renamed successfully" };
+    attachRoutesInfo(ctx);
   } catch (err) {
     ctx.status = 500;
     ctx.body = { error: "Bulk rename failed", details: err.message };

@@ -38,9 +38,14 @@ export function readAndLogFiles(pathsString) {
 // J:\\dev\\Jasper\\testV2\\my-module.js
 // `;
 
-let files = `
+const files = `
 J:\\dev\\Jasper\\server\\src\\index.js
 J:\\dev\\Jasper\\server\\src\\routes\\files.js
+`;
+
+const filesRenamed = `
+J:\\dev\\Jasper\\server\\src\\a-index.js
+J:\\dev\\Jasper\\server\\src\\routes\\a-files.js
 `;
 
 readAndLogFiles(files);

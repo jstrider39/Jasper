@@ -1,0 +1,22 @@
+[
+  {
+    "pattern": "#",
+    "type": "heading1"
+  },
+  {
+    "pattern": "##",
+    "type": "heading2"
+  },
+  {
+    "pattern": "-",
+    "type": "list"
+  },
+  {
+    "pattern": "*",
+    "type": "italic"
+  },
+  {
+    "pattern": "**",
+    "type": "bold"
+  }
+]
